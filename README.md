@@ -11,7 +11,7 @@ For an overview of Websub refer [MOSIP Docs](https://nayakrounak.gitbook.io/mosi
  - Resume message delivery in case subscribers become unavailable and available again after some period of time
  - Gracefully handle transient message delivery failures between the the hub and the subscriber
  - Ability to authenticate and authorize hub operations such as publishing to hub, subscribing, unsubscribing, etc
- - Ability to scale seamlessly based on number of the subscribers
+ - Ability to scale seamlessly based on number of the subscribers.
 
 ## Implementation
 As mentioned above this implementation is based on Kafka message broker that does most of the heavy lifting.  At a high level following are the key components associated with this implementation.
