@@ -83,7 +83,7 @@ jobs:
         with:
           version: '11'
       - name: Download kafka-admin-client artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.KAFKA_ADMIN_BUILD_ARTIFACT }}
           path: ./
@@ -151,7 +151,7 @@ jobs:
         with:
           version: '11'
       - name: Download kafka-admin-client artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.KAFKA_ADMIN_BUILD_ARTIFACT }}
           path: ./
