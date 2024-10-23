@@ -22,15 +22,18 @@ import org.slf4j.LoggerFactory;
 
 public class MosipKafkaAdminClient {
 
+	private static Logger logger = LoggerFactory.getLogger(MosipKafkaAdminClient.class);
+	
 	private Properties properties;
 
 	public MosipKafkaAdminClient(String bootstrapServers) {
 		properties = new Properties();
 		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-
+		logger.info("bootstrapServers :: " + bootstrapServers);
 	}
 
 	public void createTopic(String topicName) throws Exception {
+		logger.info("Request received for creating topic with name :: " + topicName);
 		try (Admin admin = Admin.create(properties)) {
 			NewTopic newTopic = new NewTopic(topicName, Optional.of(1), Optional.empty());
 			CreateTopicsResult result = admin.createTopics(Collections.singleton(newTopic));
@@ -38,6 +41,11 @@ public class MosipKafkaAdminClient {
 			KafkaFuture<Void> future = result.values().get(topicName);
 			// call get() to block until topic creation has completed or failed
 				future.get();
+			logger.info("Created topic with name :: " + topicName);
+		}catch (Exception e) {
+			logger.error("Error occurred while creating the topic :: " + topicName + ". Error :: " + e.getMessage());
+			e.printStackTrace();
+			throw new Exception();
 		}
 	}
 
@@ -49,10 +57,16 @@ public class MosipKafkaAdminClient {
 	}
 
 	public Set<String> getAllTopics() throws Exception {
+		logger.info("Request received for getting all the topics.");
 		try (Admin admin = Admin.create(properties)) {
 			ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
 			listTopicsOptions.listInternal(true);
+			logger.info("Request received for getting all the topics.");
 			return admin.listTopics(listTopicsOptions).names().get();
+		}catch (Exception e) {
+			logger.error("Error occurred while getting all the topics. Error :: " + e.getMessage());
+			e.printStackTrace();
+			throw new Exception();
 		}
 	}
 
@@ -61,6 +75,10 @@ public class MosipKafkaAdminClient {
 		try (Admin admin = Admin.create(properties)) {
 			DescribeTopicsResult result = admin.describeTopics(Collections.singleton(topic));
 			return result.all().get();
+		}catch (Exception e) {
+			logger.error("Error occurred while describeTopic. Error :: " + e.getMessage());
+			e.printStackTrace();
+			throw new Exception();
 		}
 	}
 }
